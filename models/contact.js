@@ -1,10 +1,10 @@
 const { Schema, model } = require("mongoose");
 const Joi = require("joi");
 
-const handleMongooseError = require("../helpers");
+const { handleMongooseError } = require("../helpers");
 
-const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-const phoneRegex = /^\(([0-9]{3})\)( )([0-9]{3})-([0-9]{4})$/;
+const emailRegexp = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+const phoneRegexp = /^\(([0-9]{3})\)( )([0-9]{3})-([0-9]{4})$/;
 
 const contactSchema = new Schema(
   {
@@ -15,12 +15,12 @@ const contactSchema = new Schema(
     email: {
       type: String,
       required: [true, "Set email"],
-      match: emailRegex,
+      match: emailRegexp,
     },
     phone: {
       type: String,
       required: [true, "Set phone number"],
-      match: phoneRegex,
+      match: phoneRegexp,
     },
     favorite: {
       type: Boolean,
@@ -37,14 +37,14 @@ const addSchema = Joi.object({
     .messages({ "any.required": "Name is a required field" })
     .required(),
   email: Joi.string()
-    .email()
+    .pattern(emailRegexp)
     .messages({
       "string.email": "Email must be valid, f.e.: example@mail.com",
       "any.required": "Email is a required field",
     })
     .required(),
   phone: Joi.string()
-    .regex(phoneRegex)
+    .regex(phoneRegexp)
     .messages({
       "string.pattern.base": "Phone number must be in format:(123) 123-1234",
       "any.required": "Phone is a required field",
