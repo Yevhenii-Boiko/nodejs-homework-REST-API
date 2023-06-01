@@ -18,8 +18,8 @@ router.post("/logout", authenticate, ctrl.logout);
 
 router.patch(
   "/subscription",
-  validateBody(schemas.subscriptionSchema),
   authenticate,
+  validateBody(schemas.subscriptionSchema),
   ctrl.updateSubscription
 );
 

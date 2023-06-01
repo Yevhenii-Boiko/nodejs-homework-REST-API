@@ -4,20 +4,12 @@ const { HttpError, ctrlWrapper } = require("../helpers");
 
 const getAllContacts = async (req, res) => {
   const { _id: owner } = req.user;
-  const { page = 1, limit = 20, favorite } = req.query;
-  const skip = (page - 1) * limit;
-  const result = await Contact.find({ owner }, { skip, limit }).populate(
+  const result = await Contact.find({ owner }).populate(
     "owner",
     "email subscription"
   );
 
-  if (favorite) {
-    res.json(
-      result.filter((contact) => contact.favorite.toString() === favorite)
-    );
-  } else {
-    res.json(result);
-  }
+  res.json(result);
 };
 
 const getContactById = async (req, res) => {
